@@ -1,6 +1,6 @@
 use tokio::{net::{TcpListener, TcpStream}};
 
-use proxyProtocol::protocol::v2::{proxy_protocolv2};
+use proxyProtocol::write_proxy;
 use anyhow::{anyhow, Result};
 #[tokio::main]
 async fn main() {
@@ -11,7 +11,7 @@ async fn main() {
                 tokio::spawn(async move {
                     match TcpStream::connect("127.0.0.1:8081").await {
                         Ok(mut backend_stream) => {
-                            proxy_protocolv2(&client_stream, &mut backend_stream).await.expect("Failed to add proxy protocol v2");
+                            write_proxy(2, &client_stream, &mut backend_stream).await;
                             reverse(client_stream, backend_stream).await.expect("Failed to send packet to backend side");
                         }
                         Err(e) => println!("{}", e)
