@@ -34,7 +34,7 @@ pub async fn proxy_protocolv2(client_stream: &TcpStream, serveur_stream: &mut Tc
                 }
             }
     
-            cursor.write_all(&peeraddr.port().to_be_bytes()).await.expect("msg");
+            cursor.write_all(&peeraddr.port().to_be_bytes()).await.expect("Failed to add src port");
             cursor.write_all(&streamaddr.port().to_be_bytes()).await.expect("Failed to add dst port");
             
     
